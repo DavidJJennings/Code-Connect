@@ -1,7 +1,13 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { FaHome } from "react-icons/fa";
+import { FaHome, FaFolderOpen } from "react-icons/fa";
+import { GiThreeFriends } from "react-icons/gi";
+import { IoIosNotifications } from "react-icons/io";
+import { BiSolidMessageSquareDetail } from "react-icons/bi";
+import { IoMdArrowDropdown } from "react-icons/io";
+import { FaUser } from "react-icons/fa";
+import { ImParagraphJustify } from "react-icons/im";
 
 const Header = () => {
   return (
@@ -25,10 +31,48 @@ const Header = () => {
           <NavWrapper>
             <NavList>
               <a>
-                <FaHome style={{ color: "rgba(52, 73, 94, 1)" }} />
+                <FaHome className="navIcon" />
                 <span>Home</span>
               </a>
             </NavList>
+            <NavList>
+              <a>
+                <GiThreeFriends className="navIcon" />
+                <span>Connections</span>
+              </a>
+            </NavList>
+            <NavList>
+              <a>
+                <FaFolderOpen className="navIcon" />
+                <span>Projects</span>
+              </a>
+            </NavList>
+            <NavList>
+              <a>
+                <BiSolidMessageSquareDetail className="navIcon" />
+                <span>Messages</span>
+              </a>
+            </NavList>
+            <NavList>
+              <a>
+                <IoIosNotifications className="navIcon" />
+                <span>Notifications</span>
+              </a>
+            </NavList>
+
+            <User>
+              <a>
+                <FaUser className="navIcon" />
+                <span>
+                  Me
+                  <IoMdArrowDropdown className="navIcon" />
+                </span>
+              </a>
+
+              <SignOut>
+                <a>Sign Out</a>
+              </SignOut>
+            </User>
           </NavWrapper>
         </Nav>
       </Content>
@@ -39,10 +83,10 @@ const Header = () => {
 const Container = styled.div`
   background-color: white;
   position: fixed;
-  height: 4.5rem;
+  height: 3rem;
   width: 100vw;
   top: 0;
-  padding: 0 2rem;
+  padding: 2rem 2rem;
   box-sizing: border-box;
   border-bottom: 1px solid #34495e;
 `;
@@ -58,9 +102,9 @@ const Content = styled.div`
 const Logo = styled.span`
   font-size: 0;
   margin-right: 1rem;
-  height: 45px;
+  height: 35px;
   img {
-    width: 45px;
+    width: 35px;
   }
 `;
 
@@ -75,9 +119,8 @@ const Search = styled.div`
       box-shadow: none;
       width: 300px;
       background-color: rgba(54, 69, 79, 0.1);
-
       border-radius: 44px;
-      font-size: 1.5rem;
+      font-size: 1rem;
       padding: 0.5rem 0 0.5rem 2.5rem;
       outline-color: rgb(54, 69, 79);
     }
@@ -86,17 +129,17 @@ const Search = styled.div`
 
 const SearchIcon = styled.div`
   pointer-events: none;
-  font-size: 20px;
+  font-size: 18px;
   z-index: 1;
   position: absolute;
-  top: 5.5px;
+  top: 5px;
   left: 12px;
 `;
 
 const Nav = styled.nav`
   margin-left: auto;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 840px) {
     position: fixed;
     left: 0;
     bottom: 0;
@@ -114,35 +157,66 @@ const NavWrapper = styled.ul`
 const NavList = styled.li`
   display: flex;
   align-items: center;
+  margin: 2px;
+
+  .navIcon {
+    color: #34495e;
+  }
   a {
     align-items: center;
     background: transparent;
     display: flex;
     flex-direction: column;
-    font-size: 35px;
+    font-size: 28.5px;
     justify-content: center;
-    line-height: 1.5;
     min-height: 52px;
     min-width: 80px;
     position: relative;
     text-decoration: none;
     cursor: pointer;
     span {
-      font-size: 14px;
+      font-size: 12.5px;
       display: flex;
       align-items: center;
       color: rgba(52, 73, 94, 1);
     }
-    @media (max-width: 768px) {
+    @media (max-width: 840px) {
       min-width: 70px;
     }
 
     &:hover,
     &:active {
       span {
-        color: rgba(52, 73, 94, 1);
         border-bottom: 2px solid rgba(52, 73, 94, 1);
       }
+    }
+  }
+`;
+
+const SignOut = styled.div`
+  display: none;
+  position: absolute;
+  top: 50px;
+  font-size: 12.5px;
+  background-color: white;
+  border-radius: 0 0 5px 5px;
+  width: 90%;
+  transition-duration: 200ms;
+
+  a {
+    font-size: 12.5px;
+  }
+`;
+
+const User = styled(NavList)`
+  display: flex;
+  position: relative;
+  align-items: center;
+  width: 100px;
+  justify-content: center;
+  &:hover {
+    ${SignOut} {
+      display: block;
     }
   }
 `;
