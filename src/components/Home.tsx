@@ -22,6 +22,7 @@ const Container = styled.div`
   height: 100vh;
   width: 100%;
   background-color: rgba(54, 69, 79, 0.1);
+  overflow-y: hidden;
 `;
 
 const GridLayout = styled.div`
@@ -30,7 +31,7 @@ const GridLayout = styled.div`
   max-width: 100%;
   display: grid;
   grid-template-areas: "Left Center Right";
-  grid-template-columns: 2fr 6fr 2fr;
+  grid-template-columns: 2fr 5.5fr 2.5fr;
   grid-template-rows: auto;
   grid-column-gap: 1rem;
   @media (max-width: 768px) {

@@ -217,6 +217,17 @@ const CommunityCard = styled(ProfileCard)`
       span {
         color: black;
       }
+      img {
+        display: none;
+      }
+      &:hover {
+        span {
+          text-decoration: none;
+        }
+        img:first-child {
+          display: initial;
+        }
+      }
     }
 
     padding: 1rem;
