@@ -7,7 +7,6 @@ import { IoIosNotifications } from "react-icons/io";
 import { BiSolidMessageSquareDetail } from "react-icons/bi";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
-import { ImParagraphJustify } from "react-icons/im";
 
 const Header = () => {
   return (
@@ -81,6 +80,7 @@ const Header = () => {
 };
 
 const Container = styled.div`
+  z-index: 1000;
   background-color: white;
   position: fixed;
   height: 3rem;
