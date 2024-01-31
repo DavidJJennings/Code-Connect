@@ -22,9 +22,7 @@ const Right: React.FC = () => {
           <NewsList>Using :has() as a CSS Parent Selector</NewsList>
           <NewsList>Top CSS tips and tricks for 2024!</NewsList>
           <NewsList>React Native Best Practices</NewsList>
-          <NewsList>
-            UseReducer vs UseEffect: When to use them and why!
-          </NewsList>
+          <NewsList>UseReducer vs UseState: When to use them and why!</NewsList>
         </NewsBody>
         <a>
           <span>
@@ -81,16 +79,15 @@ const NewsCard = styled.div`
 `;
 
 const InfoText = styled.div`
-  box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px,
-    rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px,
-    rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+    rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
   padding: 1rem;
   z-index: 5;
   border-radius: 5px;
   background-color: #fff;
   position: absolute;
   right: 0.5rem;
-  top: 2.5px;
+  top: 1.5px;
   width: 200px;
   display: none;
 `;

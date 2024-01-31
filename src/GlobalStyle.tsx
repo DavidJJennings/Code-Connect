@@ -53,7 +53,13 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     font-family: 'QuicksandMedium', sans-serif;
+     background-color: rgba(54, 69, 79, 0.1);
+     overflow-y: auto;
+     overflow-x: hidden;
+  
   }
+  
+  
 
 
 

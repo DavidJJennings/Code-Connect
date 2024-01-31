@@ -3,6 +3,7 @@ import LogIn from "./components/LogIn";
 import GlobalStyle from "./GlobalStyle";
 import Header from "./components/Header";
 import Home from "./components/Home";
+import "./index.css";
 
 function App() {
   return (

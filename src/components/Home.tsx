@@ -19,9 +19,9 @@ export default Home;
 const Container = styled.div`
   margin-top: 4rem;
   padding: 0;
-  height: 100vh;
+  margin-bottom: 50px;
+
   width: 100%;
-  background-color: rgba(54, 69, 79, 0.1);
   overflow-y: hidden;
 `;
 
