@@ -6,76 +6,91 @@ import { GiThreeFriends } from "react-icons/gi";
 import { IoIosNotifications } from "react-icons/io";
 import { BiSolidMessageSquareDetail } from "react-icons/bi";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { FaUser } from "react-icons/fa";
+import useCurrentUser from "../state/user/useCurrentUser";
+import { Navigate } from "react-router-dom";
+import { logout } from "../state/user/userSlice";
+import { useAppDispatch } from "../state/store";
 
 const Header = () => {
+  const currentUser = useCurrentUser();
+  const dispatch = useAppDispatch();
+
   return (
-    <Container>
-      <Content>
-        <Logo>
-          <img src="/Logo.svg" alt="" />
-        </Logo>
-        <Search>
-          <div>
-            <input type="text" placeholder="Search..." />
-          </div>
-          <SearchIcon>
-            <FontAwesomeIcon
-              icon={faMagnifyingGlass}
-              style={{ color: "#34495e" }}
-            />
-          </SearchIcon>
-        </Search>
-        <Nav>
-          <NavWrapper>
-            <NavList>
-              <a>
-                <FaHome className="navIcon" />
-                <span>Home</span>
-              </a>
-            </NavList>
-            <NavList>
-              <a>
-                <GiThreeFriends className="navIcon" />
-                <span>Connections</span>
-              </a>
-            </NavList>
-            <NavList>
-              <a>
-                <FaFolderOpen className="navIcon" />
-                <span>Projects</span>
-              </a>
-            </NavList>
-            <NavList>
-              <a>
-                <BiSolidMessageSquareDetail className="navIcon" />
-                <span>Messages</span>
-              </a>
-            </NavList>
-            <NavList>
-              <a>
-                <IoIosNotifications className="navIcon" />
-                <span>Notifications</span>
-              </a>
-            </NavList>
+    <>
+      {!currentUser ? (
+        <Navigate to="/" />
+      ) : (
+        <Container>
+          <Content>
+            <Logo>
+              <img src="/Logo.svg" alt="" />
+            </Logo>
+            <Search>
+              <div>
+                <input type="text" placeholder="Search..." />
+              </div>
+              <SearchIcon>
+                <FontAwesomeIcon
+                  icon={faMagnifyingGlass}
+                  style={{ color: "#34495e" }}
+                />
+              </SearchIcon>
+            </Search>
+            <Nav>
+              <NavWrapper>
+                <NavList>
+                  <a>
+                    <FaHome className="navIcon" />
+                    <span>Home</span>
+                  </a>
+                </NavList>
+                <NavList>
+                  <a>
+                    <GiThreeFriends className="navIcon" />
+                    <span>Connections</span>
+                  </a>
+                </NavList>
+                <NavList>
+                  <a>
+                    <FaFolderOpen className="navIcon" />
+                    <span>Projects</span>
+                  </a>
+                </NavList>
+                <NavList>
+                  <a>
+                    <BiSolidMessageSquareDetail className="navIcon" />
+                    <span>Messages</span>
+                  </a>
+                </NavList>
+                <NavList>
+                  <a>
+                    <IoIosNotifications className="navIcon" />
+                    <span>Notifications</span>
+                  </a>
+                </NavList>
 
-            <User>
-              <a>
-                <FaUser className="navIcon" />
-                <span>
-                  Me
-                  <IoMdArrowDropdown className="navIcon" />
-                </span>
-              </a>
+                <User>
+                  <a>
+                    <img
+                      src={currentUser.photoURL || "/User-Icon.svg"}
+                      alt="User Icon SVG"
+                    />
+                    <span>
+                      Me
+                      <IoMdArrowDropdown className="navIcon" />
+                    </span>
+                  </a>
 
-              <SignOut>
-                <a>Sign Out</a>
-              </SignOut>
-            </User>
-          </NavWrapper>
-        </Nav>
-      </Content>
-    </Container>
+                  <SignOut onClick={() => dispatch(logout())}>
+                    <a>Sign Out</a>
+                  </SignOut>
+                </User>
+              </NavWrapper>
+            </Nav>
+          </Content>
+        </Container>
+      )}
+    </>
   );
 };
 
@@ -212,8 +227,10 @@ const User = styled(NavList)`
   display: flex;
   position: relative;
   align-items: center;
-  width: 100px;
   justify-content: center;
+  img {
+    width: 25px;
+  }
   &:hover {
     ${SignOut} {
       display: block;

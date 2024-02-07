@@ -1,11 +1,16 @@
 import styled from "styled-components";
+import useCurrentUser from "../state/user/useCurrentUser";
 
 const Center: React.FC = () => {
+  const currentUser = useCurrentUser();
   return (
     <Container>
       <PostBox>
         <User>
-          <img src="/User-Icon.svg" alt="User Icon" />
+          <img
+            src={currentUser?.photoURL || "/User-Icon.svg"}
+            alt="User Icon"
+          />
           <button>Start a post</button>
         </User>
         <ContentUpload>
@@ -27,9 +32,12 @@ const Center: React.FC = () => {
       </PostBox>
       <Article>
         <PostUser>
-          <img src="/User-Icon.svg" alt="Default User Icon" />
+          <img
+            src={currentUser?.photoURL || "/User-Icon.svg"}
+            alt="Default User Icon"
+          />
           <div>
-            <h6>Title</h6>
+            <h6>{currentUser?.displayName || "Title"}</h6>
             <span>Info</span>
             <span>Date</span>
           </div>
@@ -62,7 +70,7 @@ const Center: React.FC = () => {
                 src="/Reaction-Counter-Icon.svg"
                 alt="Reaction Counter Icon"
               />
-              <span>87</span>
+              <span>4</span>
             </div>
             <span>1 repost</span>
           </Counter>

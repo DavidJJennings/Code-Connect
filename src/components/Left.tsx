@@ -1,12 +1,16 @@
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { RootState } from "../state/store";
 
 const Left: React.FC = () => {
+  const currentUser = useSelector((state: RootState) => state.user.user);
+
   return (
     <Container>
       <ProfileCard>
         <UserInfo>
           <CardBackground>
-            <Photo />
+            <img src={currentUser?.photoURL || "/Camera-Icon.svg"} alt="" />
           </CardBackground>
           <AddPhotoHeader>
             <h4>Welcome!</h4>
@@ -25,7 +29,6 @@ const Left: React.FC = () => {
         <Invitations>
           <a>
             <h6>Invitations</h6>
-
             <span>0</span>
           </a>
         </Invitations>
@@ -98,24 +101,18 @@ const CardBackground = styled.div`
   background-size: 400px;
   height: 100px;
   position: relative;
-`;
-
-const Photo = styled.div`
-  background: url("/Camera-Icon.svg") center center;
-  background-color: white;
-  background-size: 40px;
-  background-repeat: no-repeat;
-  width: 40px;
-  height: 40px;
-  padding: 0.5rem;
-  border-radius: 50%;
-  position: absolute;
-  bottom: -25px;
-  left: 50%;
-  transform: translateX(-30px);
-
-  &:hover {
-    background-color: #dddddd;
+  img {
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-38px);
+    width: 60px;
+    height: 60px;
+    padding: 0.5rem;
+    border-radius: 50%;
+    &:hover {
+      opacity: 0.75;
+    }
   }
 `;
 
@@ -211,7 +208,7 @@ const CommunityCard = styled(ProfileCard)`
   display: flex;
   flex-direction: column;
   text-align: left;
-
+  margin-bottom: 10px;
   div {
     a:first-child {
       span {

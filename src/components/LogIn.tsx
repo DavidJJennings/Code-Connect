@@ -1,37 +1,79 @@
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../firebase";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { logInUser } from "../state/user/userSlice";
+import { AppDispatch, RootState } from "../state/store";
+import { Navigate } from "react-router-dom";
 
 const LogIn: React.FC = () => {
-  return (
-    <Container>
-      <Nav>
-        <a href="/">
-          <img src="/Login-Logo.svg" alt="Login Logo" />
-        </a>
-        <div>
-          <Join>Join Now</Join>
-          <SignIn>Sign In</SignIn>
-        </div>
-      </Nav>
-      <Section>
-        <Hero>
-          <h1>Connect, Create, Conquer!</h1>
+  const dispatch: AppDispatch = useDispatch();
 
-          <Form>
-            <label htmlFor="username">Email or Phone</label>
-            <input id="username" type="text" />
-            <label htmlFor="password">Password</label>
-            <input type="password" id="password" />
-            <a href="#">Forgot Password?</a>
-            <LogInBtn>Sign In</LogInBtn>
-            <GoogleBtn>
-              <img src="/google-g-icon.svg" alt="" />
-              Sign In with Google
-            </GoogleBtn>
-          </Form>
-          <img src="/Login-Hero.png" alt="Background Image of Atom" />
-        </Hero>
-      </Section>
-    </Container>
+  const signInWithGoogle = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+
+    await signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+
+        if (user.uid && user.email)
+          dispatch(
+            logInUser({
+              uid: user.uid,
+              email: user.email,
+              photoURL: user.photoURL,
+              displayName: user.displayName,
+            })
+          );
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const currentUser = useSelector((state: RootState) => state.user.user);
+
+  return (
+    <>
+      {currentUser ? (
+        <Navigate to="/home" />
+      ) : (
+        <Container>
+          <Nav>
+            <a href="/">
+              <img src="/Login-Logo.svg" alt="Login Logo" />
+            </a>
+            <div>
+              <Join>Join Now</Join>
+              <SignIn>Sign In</SignIn>
+            </div>
+          </Nav>
+          <Section>
+            <Hero>
+              <h1>Connect, Create, Conquer!</h1>
+
+              <Form>
+                <label htmlFor="username">Email or Phone</label>
+                <input id="username" type="text" autoComplete="current-email" />
+                <label htmlFor="password">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                />
+                <a href="#">Forgot Password?</a>
+                <LogInBtn>Sign In</LogInBtn>
+                <GoogleBtn onClick={(event) => signInWithGoogle(event)}>
+                  <img src="/google-g-icon.svg" alt="" />
+                  Sign In with Google
+                </GoogleBtn>
+              </Form>
+              <img src="/Login-Hero.png" alt="Background Image of Atom" />
+            </Hero>
+          </Section>
+        </Container>
+      )}
+    </>
   );
 };
 
