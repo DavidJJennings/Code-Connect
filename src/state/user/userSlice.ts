@@ -2,13 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { auth } from "../../firebase";
 import { AppDispatch } from "../store";
 
-type UserState = {
+export type UserState = {
   user: null | {
     uid: string;
     email: string;
-    firstName?: string;
-    displayName?: string;
-    photoURL?: string;
+    displayName: string | null;
+    photoURL: string | null;
   };
   isLoading: boolean;
 };

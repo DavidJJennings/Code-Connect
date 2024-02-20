@@ -45,7 +45,8 @@ const NewsCard = styled.div`
   padding: 1rem;
   overflow: hidden;
   border-radius: 5px;
-  box-shadow: 0 0 0 1px rgba(52, 73, 94, 0.2), 0 0 0 1px rgba(52, 73, 94, 0.3);
+  box-shadow: rgba(14, 30, 37, 0.8) 0px 2px 4px 0px;
+
   background-color: #fff;
   h6 {
     font-size: 1.1rem;
@@ -79,8 +80,8 @@ const NewsCard = styled.div`
 `;
 
 const InfoText = styled.div`
-  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
-    rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+  box-shadow: rgba(14, 30, 37, 0.8) 0px 2px 4px 0px;
+
   padding: 1rem;
   z-index: 5;
   border-radius: 5px;

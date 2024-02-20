@@ -1,8 +1,32 @@
 import styled from "styled-components";
+import PostModal from "./PostModal";
 import useCurrentUser from "../state/user/useCurrentUser";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ClipLoader } from "react-spinners";
+import { AppDispatch, RootState } from "../state/store";
+import { fetchArticles } from "../state/articles/fetchArticleSlice";
 
 const Center: React.FC = () => {
   const currentUser = useCurrentUser();
+  const [showModal, setShowModal] = useState(false);
+  const status = useSelector((state: RootState) => state.articles.status);
+  const articles = useSelector(
+    (state: RootState) => state.fetchArticles.articles
+  );
+  const dispatch: AppDispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchArticles());
+  }, []);
+
+  const switchModal = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    const modalState = !showModal;
+    setShowModal(modalState);
+  };
   return (
     <Container>
       <PostBox>
@@ -11,7 +35,7 @@ const Center: React.FC = () => {
             src={currentUser?.photoURL || "/User-Icon.svg"}
             alt="User Icon"
           />
-          <button>Start a post</button>
+          <button onClick={(event) => switchModal(event)}>Start a post</button>
         </User>
         <ContentUpload>
           <button>
@@ -30,16 +54,101 @@ const Center: React.FC = () => {
           </button>
         </ContentUpload>
       </PostBox>
+      {status === "loading" ? (
+        <LoadingModal>
+          <SpinnerContainer>
+            <ClipLoader color="#34495e" size={100} />
+          </SpinnerContainer>
+        </LoadingModal>
+      ) : (
+        articles &&
+        articles.map((article) => {
+          const { content, id, imageUrl, timestamp, user } = article;
+          const { displayName, photoURL } = user;
+          return (
+            <Article key={id}>
+              <PostUser>
+                <img src={photoURL} alt="User Profile Icon" />
+                <div>
+                  <h6>{displayName}</h6>
+                  <span>Trial User</span>
+                  <span>{timestamp}</span>
+                </div>
+
+                <button>
+                  <img src="/Ellipsis-Icon.svg" alt="Ellipsis" />
+                </button>
+              </PostUser>
+              <Description>{content}</Description>
+              {imageUrl && (
+                <SharedImage>
+                  <img src={imageUrl} alt="User posted image or video." />
+                </SharedImage>
+              )}
+              <Reactions>
+                <Buttons>
+                  <LikeButton>
+                    <button>
+                      <img src="/Like-Icon.svg" alt="Like Icon" />
+                      <span>Like</span>
+                    </button>
+                    <ReactionModal>
+                      <button>
+                        <img
+                          src="/Filled-Like-Icon.svg"
+                          alt="Heart Reaction Icon"
+                        />
+                      </button>
+                      <button>
+                        <img
+                          src="/Clapping-Icon.svg"
+                          alt="Heart Reaction Icon"
+                        />
+                      </button>
+                      <button>
+                        <img src="/Heart-Icon.svg" alt="Heart Reaction Icon" />
+                      </button>
+                      <button>
+                        <img
+                          src="/Stunned-Icon.svg"
+                          alt="Heart Reaction Icon"
+                        />
+                      </button>
+                      <button>
+                        <img
+                          src="/Laughing-Icon.svg"
+                          alt="Heart Reaction Icon"
+                        />
+                      </button>
+                    </ReactionModal>
+                  </LikeButton>
+
+                  <button>
+                    <img src="Comment-Icon.svg" alt="" />
+                    <span>Comment</span>
+                  </button>
+                  <button>
+                    <img src="Repost-Icon.svg" alt="" />
+                    <span>Repost</span>
+                  </button>
+                  <button>
+                    <img src="Share-Icon.svg" alt="" />
+                    <span>Send</span>
+                  </button>
+                </Buttons>
+              </Reactions>
+            </Article>
+          );
+        })
+      )}
+
       <Article>
         <PostUser>
-          <img
-            src={currentUser?.photoURL || "/User-Icon.svg"}
-            alt="Default User Icon"
-          />
+          <img src="/Logo.svg" alt="Default User Icon" />
           <div>
-            <h6>{currentUser?.displayName || "Title"}</h6>
-            <span>Info</span>
-            <span>Date</span>
+            <h6>David Jennings</h6>
+            <span>Creator of Code Connect</span>
+            <span>20/02/2024</span>
           </div>
 
           <button>
@@ -48,13 +157,15 @@ const Center: React.FC = () => {
         </PostUser>
 
         <Description>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae,
-          delectus at perspiciatis quisquam quo facere consectetur, blanditiis
-          harum culpa, quis consequuntur tempore deserunt velit minus magni iste
-          laborum nam distinctio. Ipsam vel soluta incidunt? Odit, quia esse.
-          Magni aut unde laborum quas natus necessitatibus impedit sed, harum
-          corporis distinctio, enim obcaecati! Molestias amet saepe adipisci
-          deserunt corporis officia corrupti facere.
+          Welcome to Code Connect, a social media platform for Junior Developers
+          to connect an collaborate on larger scale projects, giving them an
+          opportunity to practise the cohesion of soft and hard skills in an
+          environment of their peers. <br /> <br />
+          Try clicking "Start a post" to post your own content to the feed, once
+          the modal opens, feel free to click the add media button to share
+          images and videos of your own! <br /> <br />
+          Please be aware that as this purely a showcase website, all uploads
+          will be wiped 30 minutes after upload for security purposes. Enjoy!
         </Description>
         <SharedImage>
           <img
@@ -70,9 +181,9 @@ const Center: React.FC = () => {
                 src="/Reaction-Counter-Icon.svg"
                 alt="Reaction Counter Icon"
               />
-              <span>4</span>
+              <span>16</span>
             </div>
-            <span>1 repost</span>
+            <span>2 reposts</span>
           </Counter>
           <Buttons>
             <LikeButton>
@@ -114,6 +225,8 @@ const Center: React.FC = () => {
           </Buttons>
         </Reactions>
       </Article>
+
+      {showModal && <PostModal switchModal={switchModal} />}
     </Container>
   );
 };
@@ -121,6 +234,7 @@ export default Center;
 
 const Container = styled.section`
   grid-area: Center;
+  position: relative;
 `;
 
 const PostBox = styled.div`
@@ -130,7 +244,7 @@ const PostBox = styled.div`
   border-radius: 5px;
   position: relative;
   border: none;
-  box-shadow: 0 0 1px rgba(52, 73, 94, 0.2), 0 0 0 1px rgba(52, 73, 94, 0.3);
+  box-shadow: rgba(14, 30, 37, 0.8) 0px 2px 4px 0px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -149,6 +263,7 @@ const User = styled.div`
     border: 1px solid rgba(0, 0, 0, 0.4);
     padding: 1rem;
     text-align: left;
+    cursor: pointer;
   }
   img {
     border-radius: 50%;
@@ -156,6 +271,21 @@ const User = styled.div`
     width: 2.85rem;
     height: 2.85rem;
   }
+`;
+
+const LoadingModal = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+`;
+
+const SpinnerContainer = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const ContentUpload = styled.div`
@@ -203,6 +333,7 @@ const PostUser = styled.div`
   flex-wrap: nowrap;
   position: relative;
   justify-content: flex-start;
+  text-align: left;
 
   span {
     font-size: 12.5px;
@@ -271,14 +402,14 @@ const Counter = styled.div`
     align-items: center;
   }
   span {
-    font-size: 15px;
+    font-size: 17.5px;
     cursor: pointer;
     &:hover {
       text-decoration: underline;
     }
   }
   img {
-    width: 35px;
+    height: 20px;
     margin-right: 5px;
   }
 `;
@@ -322,8 +453,7 @@ const ReactionModal = styled.div`
   top: -40.5px;
   left: -40px;
   padding: 0;
-  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
-    rgba(14, 30, 37, 0.62) 0px 2px 16px 0px;
+  box-shadow: rgba(14, 30, 37, 0.8) 0px 2px 4px 0px;
   z-index: 2;
   background-color: white;
   border-radius: 5px;

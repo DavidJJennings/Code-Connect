@@ -20,7 +20,6 @@ const Container = styled.div`
   margin-top: 4rem;
   padding: 0;
   margin-bottom: 50px;
-
   width: 100%;
   overflow-y: hidden;
 `;

@@ -95,7 +95,7 @@ const Header = () => {
 };
 
 const Container = styled.div`
-  z-index: 1000;
+  z-index: 1;
   background-color: white;
   position: fixed;
   height: 3rem;

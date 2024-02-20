@@ -110,7 +110,6 @@ const Nav = styled.nav`
 const Join = styled.a`
   font-size: 1rem;
   color: #34495e;
-  font-family: TabarraPro-black, sans-serif;
   margin-right: 2rem;
   box-shadow: inset 0 0 0 2px #34495e;
   text-decoration: none;
@@ -140,7 +139,6 @@ const Join = styled.a`
 const SignIn = styled.a`
   font-size: 1rem;
   color: white;
-  font-family: TabarraPro-black, sans-serif;
   margin-right: 0.75rem;
   border-radius: 44px;
   padding: 0.75rem 1rem;
@@ -150,7 +148,7 @@ const SignIn = styled.a`
   transition-duration: 300ms;
   cursor: pointer;
   &:hover {
-    background-color: rgba(66, 69, 72, 0.3);
+    background-color: rgba(52, 73, 94, 0.65);
   }
   @media screen and (max-width: 768px) {
     margin-right: 1rem;
@@ -170,8 +168,8 @@ const Section = styled.section`
   display: flex;
   align-content: start;
   min-height: 600px;
-  padding-top: 5rem;
-  padding-bottom: 3.5rem;
+  padding-top: 3.5rem;
+
   position: relative;
   flex-wrap: wrap;
   width: 100%;
@@ -191,7 +189,6 @@ const Hero = styled.div`
     width: 65%;
     color: #34495e;
     font-size: 3.25rem;
-    font-family: TabarraPro-Light;
     line-height: 60px;
     @media (max-width: 768px) {
       font-size: 2rem;
@@ -220,7 +217,7 @@ const Hero = styled.div`
 `;
 
 const Form = styled.form`
-  padding-top: 1.5rem;
+  padding-top: 1.25rem;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -237,10 +234,10 @@ const Form = styled.form`
 
   input {
     box-sizing: border-box;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     width: 100%;
     height: auto;
-    padding: 1rem;
+    padding: 0.5rem;
     @media (max-width: 768px) {
       width: 100%;
     }
@@ -265,7 +262,7 @@ const LogInBtn = styled.button`
   transition-duration: 300ms;
   cursor: pointer;
   &:hover {
-    background-color: rgba(52, 73, 94, 0.3);
+    background-color: rgba(52, 73, 94, 0.65);
   }
   @media (max-width: 768px) {
     width: 100%;

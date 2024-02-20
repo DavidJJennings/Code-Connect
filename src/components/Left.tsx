@@ -13,7 +13,7 @@ const Left: React.FC = () => {
             <img src={currentUser?.photoURL || "/Camera-Icon.svg"} alt="" />
           </CardBackground>
           <AddPhotoHeader>
-            <h4>Welcome!</h4>
+            <h4>{currentUser ? currentUser.displayName : "Welcome!"}</h4>
             <h5>Add a Photo</h5>
           </AddPhotoHeader>
         </UserInfo>
@@ -81,7 +81,8 @@ const ProfileCard = styled.div`
   background-color: #fff;
   border: none;
   border-radius: 5px;
-  box-shadow: 0 0 0 1px rgba(52, 73, 94, 0.2), 0 0 0 1px rgba(52, 73, 94, 0.3);
+  box-shadow: rgba(14, 30, 37, 0.8) 0px 2px 4px 0px;
+
   transition: box-shadow 100ms;
 
   .icon {
@@ -120,7 +121,7 @@ const AddPhotoHeader = styled.div`
   margin-top: 1.75rem;
 
   h4 {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-family: "QuicksandBold";
   }
   h5 {
