@@ -3,7 +3,7 @@ import PostModal from "./PostModal";
 import useCurrentUser from "../state/user/useCurrentUser";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ClipLoader } from "react-spinners";
+import { RingLoader } from "react-spinners";
 import { AppDispatch, RootState } from "../state/store";
 import { fetchArticles } from "../state/articles/fetchArticleSlice";
 
@@ -16,10 +16,6 @@ const Center: React.FC = () => {
   );
   const dispatch: AppDispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchArticles());
-  }, []);
-
   const switchModal = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -27,12 +23,19 @@ const Center: React.FC = () => {
     const modalState = !showModal;
     setShowModal(modalState);
   };
+  useEffect(() => {
+    if (status === "succeeded") {
+      dispatch(fetchArticles()); // Fetch the latest articles once the post operation has succeeded
+    }
+  }, [status, dispatch]);
   return (
     <Container>
       <PostBox>
         <User>
           <img
-            src={currentUser?.photoURL || "/User-Icon.svg"}
+            src={
+              currentUser?.photoURL ? currentUser.photoURL : "/User-Icon.svg"
+            }
             alt="User Icon"
           />
           <button onClick={(event) => switchModal(event)}>Start a post</button>
@@ -54,177 +57,200 @@ const Center: React.FC = () => {
           </button>
         </ContentUpload>
       </PostBox>
-      {status === "loading" ? (
-        <LoadingModal>
-          <SpinnerContainer>
-            <ClipLoader color="#34495e" size={100} />
-          </SpinnerContainer>
-        </LoadingModal>
-      ) : (
-        articles &&
-        articles.map((article) => {
-          const { content, id, imageUrl, timestamp, user } = article;
-          const { displayName, photoURL } = user;
-          return (
-            <Article key={id}>
-              <PostUser>
-                <img src={photoURL} alt="User Profile Icon" />
-                <div>
-                  <h6>{displayName}</h6>
-                  <span>Trial User</span>
-                  <span>{timestamp}</span>
-                </div>
 
-                <button>
-                  <img src="/Ellipsis-Icon.svg" alt="Ellipsis" />
-                </button>
-              </PostUser>
-              <Description>{content}</Description>
-              {imageUrl && (
-                <SharedImage>
-                  <img src={imageUrl} alt="User posted image or video." />
-                </SharedImage>
-              )}
-              <Reactions>
-                <Buttons>
-                  <LikeButton>
+      <Content>
+        {status == "loading" && (
+          <LoadingModal>
+            <SpinnerContainer>
+              <RingLoader color="#34495e" size={80} />
+            </SpinnerContainer>
+          </LoadingModal>
+        )}
+        {articles &&
+          articles.map((article) => {
+            const { content, id, mediaUrl, timestamp, user } = article;
+            const dateAndTime = new Date(timestamp);
+            const options: Intl.DateTimeFormatOptions = {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            };
+            const formattedDate = dateAndTime.toLocaleDateString(
+              undefined,
+              options
+            );
+
+            return (
+              <Article key={id}>
+                <PostUser>
+                  <img
+                    src={user?.photoURL ? user.photoURL : "/User.Icon"}
+                    alt="User Icon"
+                  />
+                  <div>
+                    <h6>{user?.displayName ? user.displayName : "New User"}</h6>
+                    <span>Trial User</span>
+                    <span>{formattedDate}</span>
+                  </div>
+
+                  <button>
+                    <img src="/Ellipsis-Icon.svg" alt="Ellipsis" />
+                  </button>
+                </PostUser>
+                <Description>{content}</Description>
+                {mediaUrl && (
+                  <SharedImage>
+                    <img src={mediaUrl} alt="User posted image or video." />
+                  </SharedImage>
+                )}
+                <Reactions>
+                  <Buttons>
+                    <LikeButton>
+                      <button>
+                        <img src="/Like-Icon.svg" alt="Like Icon" />
+                        <span>Like</span>
+                      </button>
+                      <ReactionModal>
+                        <button>
+                          <img
+                            src="/Filled-Like-Icon.svg"
+                            alt="Heart Reaction Icon"
+                          />
+                        </button>
+                        <button>
+                          <img
+                            src="/Clapping-Icon.svg"
+                            alt="Heart Reaction Icon"
+                          />
+                        </button>
+                        <button>
+                          <img
+                            src="/Heart-Icon.svg"
+                            alt="Heart Reaction Icon"
+                          />
+                        </button>
+                        <button>
+                          <img
+                            src="/Stunned-Icon.svg"
+                            alt="Heart Reaction Icon"
+                          />
+                        </button>
+                        <button>
+                          <img
+                            src="/Laughing-Icon.svg"
+                            alt="Heart Reaction Icon"
+                          />
+                        </button>
+                      </ReactionModal>
+                    </LikeButton>
+
                     <button>
-                      <img src="/Like-Icon.svg" alt="Like Icon" />
-                      <span>Like</span>
+                      <img src="Comment-Icon.svg" alt="" />
+                      <span>Comment</span>
                     </button>
-                    <ReactionModal>
-                      <button>
-                        <img
-                          src="/Filled-Like-Icon.svg"
-                          alt="Heart Reaction Icon"
-                        />
-                      </button>
-                      <button>
-                        <img
-                          src="/Clapping-Icon.svg"
-                          alt="Heart Reaction Icon"
-                        />
-                      </button>
-                      <button>
-                        <img src="/Heart-Icon.svg" alt="Heart Reaction Icon" />
-                      </button>
-                      <button>
-                        <img
-                          src="/Stunned-Icon.svg"
-                          alt="Heart Reaction Icon"
-                        />
-                      </button>
-                      <button>
-                        <img
-                          src="/Laughing-Icon.svg"
-                          alt="Heart Reaction Icon"
-                        />
-                      </button>
-                    </ReactionModal>
-                  </LikeButton>
+                    <button>
+                      <img src="Repost-Icon.svg" alt="" />
+                      <span>Repost</span>
+                    </button>
+                    <button>
+                      <img src="Share-Icon.svg" alt="" />
+                      <span>Send</span>
+                    </button>
+                  </Buttons>
+                </Reactions>
+              </Article>
+            );
+          })}
 
-                  <button>
-                    <img src="Comment-Icon.svg" alt="" />
-                    <span>Comment</span>
-                  </button>
-                  <button>
-                    <img src="Repost-Icon.svg" alt="" />
-                    <span>Repost</span>
-                  </button>
-                  <button>
-                    <img src="Share-Icon.svg" alt="" />
-                    <span>Send</span>
-                  </button>
-                </Buttons>
-              </Reactions>
-            </Article>
-          );
-        })
-      )}
-
-      <Article>
-        <PostUser>
-          <img src="/Logo.svg" alt="Default User Icon" />
-          <div>
-            <h6>David Jennings</h6>
-            <span>Creator of Code Connect</span>
-            <span>20/02/2024</span>
-          </div>
-
-          <button>
-            <img src="/Ellipsis-Icon.svg" alt="Ellipsis" />
-          </button>
-        </PostUser>
-
-        <Description>
-          Welcome to Code Connect, a social media platform for Junior Developers
-          to connect an collaborate on larger scale projects, giving them an
-          opportunity to practise the cohesion of soft and hard skills in an
-          environment of their peers. <br /> <br />
-          Try clicking "Start a post" to post your own content to the feed, once
-          the modal opens, feel free to click the add media button to share
-          images and videos of your own! <br /> <br />
-          Please be aware that as this purely a showcase website, all uploads
-          will be wiped 30 minutes after upload for security purposes. Enjoy!
-        </Description>
-        <SharedImage>
-          <img
-            src="/Sample-Post.jpg"
-            alt="Sample Post of a Sunset over the Beach."
-          />
-        </SharedImage>
-
-        <Reactions>
-          <Counter>
+        <Article>
+          <PostUser>
+            <img src="/Logo.svg" alt="Default User Icon" />
             <div>
-              <img
-                src="/Reaction-Counter-Icon.svg"
-                alt="Reaction Counter Icon"
-              />
-              <span>16</span>
+              <h6>David Jennings</h6>
+              <span>Creator of Code Connect</span>
+              <span>20/02/2024</span>
             </div>
-            <span>2 reposts</span>
-          </Counter>
-          <Buttons>
-            <LikeButton>
-              <button>
-                <img src="/Like-Icon.svg" alt="Like Icon" />
-                <span>Like</span>
-              </button>
-              <ReactionModal>
-                <button>
-                  <img src="/Filled-Like-Icon.svg" alt="Heart Reaction Icon" />
-                </button>
-                <button>
-                  <img src="/Clapping-Icon.svg" alt="Heart Reaction Icon" />
-                </button>
-                <button>
-                  <img src="/Heart-Icon.svg" alt="Heart Reaction Icon" />
-                </button>
-                <button>
-                  <img src="/Stunned-Icon.svg" alt="Heart Reaction Icon" />
-                </button>
-                <button>
-                  <img src="/Laughing-Icon.svg" alt="Heart Reaction Icon" />
-                </button>
-              </ReactionModal>
-            </LikeButton>
 
             <button>
-              <img src="Comment-Icon.svg" alt="" />
-              <span>Comment</span>
+              <img src="/Ellipsis-Icon.svg" alt="Ellipsis" />
             </button>
-            <button>
-              <img src="Repost-Icon.svg" alt="" />
-              <span>Repost</span>
-            </button>
-            <button>
-              <img src="Share-Icon.svg" alt="" />
-              <span>Send</span>
-            </button>
-          </Buttons>
-        </Reactions>
-      </Article>
+          </PostUser>
+
+          <Description>
+            Welcome to Code Connect, a social media platform for Junior
+            Developers to connect an collaborate on larger scale projects,
+            giving them an opportunity to practise the cohesion of soft and hard
+            skills in an environment of their peers. <br /> <br />
+            Try clicking "Start a post" to post your own content to the feed,
+            once the modal opens, feel free to click the add media button to
+            share images and videos of your own! <br /> <br />
+            Please be aware that as this purely a showcase website, all uploads
+            will be wiped 30 minutes after upload for security purposes. Enjoy!
+          </Description>
+          <SharedImage>
+            <img
+              src="/Sample-Post.jpg"
+              alt="Sample Post of a Sunset over the Beach."
+            />
+          </SharedImage>
+
+          <Reactions>
+            <Counter>
+              <div>
+                <img
+                  src="/Reaction-Counter-Icon.svg"
+                  alt="Reaction Counter Icon"
+                />
+                <span>16</span>
+              </div>
+              <span>2 reposts</span>
+            </Counter>
+            <Buttons>
+              <LikeButton>
+                <button>
+                  <img src="/Like-Icon.svg" alt="Like Icon" />
+                  <span>Like</span>
+                </button>
+                <ReactionModal>
+                  <button>
+                    <img
+                      src="/Filled-Like-Icon.svg"
+                      alt="Heart Reaction Icon"
+                    />
+                  </button>
+                  <button>
+                    <img src="/Clapping-Icon.svg" alt="Heart Reaction Icon" />
+                  </button>
+                  <button>
+                    <img src="/Heart-Icon.svg" alt="Heart Reaction Icon" />
+                  </button>
+                  <button>
+                    <img src="/Stunned-Icon.svg" alt="Heart Reaction Icon" />
+                  </button>
+                  <button>
+                    <img src="/Laughing-Icon.svg" alt="Heart Reaction Icon" />
+                  </button>
+                </ReactionModal>
+              </LikeButton>
+
+              <button>
+                <img src="Comment-Icon.svg" alt="" />
+                <span>Comment</span>
+              </button>
+              <button>
+                <img src="Repost-Icon.svg" alt="" />
+                <span>Repost</span>
+              </button>
+              <button>
+                <img src="Share-Icon.svg" alt="" />
+                <span>Send</span>
+              </button>
+            </Buttons>
+          </Reactions>
+        </Article>
+      </Content>
 
       {showModal && <PostModal switchModal={switchModal} />}
     </Container>
@@ -279,13 +305,20 @@ const LoadingModal = styled.div`
   right: 0;
   left: 0;
   bottom: 0;
+  background-color: white;
+  opacity: 0.65;
+  z-index: 2;
 `;
 
 const SpinnerContainer = styled.div`
   position: absolute;
-  top: 50%;
+  top: 30px;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
+`;
+
+const Content = styled.div`
+  position: relative;
 `;
 
 const ContentUpload = styled.div`

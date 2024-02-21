@@ -10,10 +10,17 @@ const Left: React.FC = () => {
       <ProfileCard>
         <UserInfo>
           <CardBackground>
-            <img src={currentUser?.photoURL || "/Camera-Icon.svg"} alt="" />
+            <img
+              src={
+                currentUser?.photoURL ? currentUser.photoURL : "/User-Icon.svg"
+              }
+              alt=""
+            />
           </CardBackground>
           <AddPhotoHeader>
-            <h4>{currentUser ? currentUser.displayName : "Welcome!"}</h4>
+            <h4>
+              {currentUser?.displayName ? currentUser.displayName : "Welcome!"}
+            </h4>
             <h5>Add a Photo</h5>
           </AddPhotoHeader>
         </UserInfo>

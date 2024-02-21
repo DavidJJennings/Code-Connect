@@ -61,6 +61,7 @@ const PostModal: React.FC<modalProps> = ({ switchModal }) => {
 
   const executePost = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+
     const payload = {
       content: textContent,
       user: currentUser,
@@ -108,13 +109,33 @@ const PostModal: React.FC<modalProps> = ({ switchModal }) => {
                 <img src="Remove-Media.svg" alt="remove image icon" />
               </RemoveImage>
             )}
-            {shareMedia && <img src={URL.createObjectURL(shareMedia)} />}
+            {shareMedia && (
+              <>
+                {shareMedia.type.startsWith("video/") ? (
+                  <video width="320" height="240" controls>
+                    <source
+                      src={URL.createObjectURL(shareMedia)}
+                      type={shareMedia.type}
+                    />
+                    Your browser does not support the video tag.
+                  </video>
+                ) : (
+                  <img
+                    src={URL.createObjectURL(shareMedia)}
+                    alt="Uploaded media"
+                  />
+                )}
+                <RemoveImage onClick={() => setShareMedia(null)}>
+                  <img src="Remove-Media.svg" alt="remove image icon" />
+                </RemoveImage>
+              </>
+            )}
             <input
               type="file"
               style={{ display: "none" }}
               onChange={(event) => handleChange(event)}
               ref={fileInputRef}
-              accept="image/gif, image/jpeg, image/png, image/svg+xml, video/mp4, video/webm, video/ogg"
+              accept="image/gif, image/jpeg, image/png, image/svg+xml, video/mp4, video/webm, video/ogg,"
             />
           </UploadMedia>
         </Content>
@@ -423,8 +444,10 @@ const Schedule = styled(PostEnabled)`
 
 const UploadMedia = styled.div`
   position: relative;
-  img {
+  img,
+  video {
     width: 100%;
+    border-radius: 5px;
   }
 `;
 

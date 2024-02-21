@@ -7,7 +7,7 @@ import { UserState } from "../user/userSlice";
 type Post = {
   id: string;
   content: string;
-  imageUrl?: string;
+  mediaUrl?: string;
   timestamp: string;
   user: UserState["user"];
 };
@@ -48,7 +48,7 @@ export const postArticle = createAsyncThunk(
       const newPost: Post = {
         id: "",
         content: payload.content,
-        imageUrl: fileUrl,
+        mediaUrl: fileUrl,
         timestamp: payload.timestamp,
         user: payload.user,
       };

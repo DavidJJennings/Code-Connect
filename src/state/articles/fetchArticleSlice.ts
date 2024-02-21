@@ -6,7 +6,7 @@ import { collection, getDocs, query, orderBy } from "firebase/firestore";
 interface Article {
   id: string;
   content: string;
-  imageUrl?: string;
+  mediaUrl?: string;
   timestamp: string;
   user: UserState["user"];
 }
@@ -24,7 +24,7 @@ export const fetchArticles = createAsyncThunk(
       const article: Article = {
         id: doc.id,
         content: data.content,
-        imageUrl: data.imageUrl,
+        mediaUrl: data.mediaUrl,
         timestamp: data.timestamp,
         user: data.user,
       };
