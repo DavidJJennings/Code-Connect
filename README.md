@@ -1,4 +1,4 @@
-# React + TypeScript + Vite - Code Connect
+# React + TypeScript + Redux + Styled Components + Vite - Code Connect 
 
 Code Connect is a social media clone designed with Junior Developers in mind, giving them a place where they could connect and collaborate on larger scale projects, giving them the opportunity to practise both the soft and hard skills that are essential for working well with a team in a professional environment.
 
