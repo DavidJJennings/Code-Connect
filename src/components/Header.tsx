@@ -71,12 +71,9 @@ const Header = () => {
 
                 <User>
                   <a>
-                    <img
-                      src={currentUser.photoURL || "/User-Icon.svg"}
-                      alt="User Icon SVG"
-                    />
+                    <img src={currentUser.photoURL || "/User-Icon.svg"} />
                     <span>
-                      Me
+                      You
                       <IoMdArrowDropdown className="navIcon" />
                     </span>
                   </a>
@@ -138,6 +135,15 @@ const Search = styled.div`
       font-size: 1rem;
       padding: 0.5rem 0 0.5rem 2.5rem;
       outline-color: rgb(54, 69, 79);
+      @media (max-width: 925px) {
+        width: 150px;
+      }
+      @media (max-width: 925px) {
+        width: 150px;
+      }
+      @media (max-width: 782px) {
+        width: 250px;
+      }
     }
   }
 `;
@@ -154,9 +160,11 @@ const SearchIcon = styled.div`
 const Nav = styled.nav`
   margin-left: auto;
 
-  @media screen and (max-width: 840px) {
+  @media screen and (max-width: 782px) {
     position: fixed;
+    justify-content: center;
     left: 0;
+    display: flex;
     bottom: 0;
     background: white;
     width: 100%;
@@ -167,6 +175,7 @@ const NavWrapper = styled.ul`
   display: flex;
   flex-wrap: nowrap;
   list-style-type: none;
+  position: relative;
 `;
 
 const NavList = styled.li`
@@ -195,8 +204,12 @@ const NavList = styled.li`
       align-items: center;
       color: rgba(52, 73, 94, 1);
     }
-    @media (max-width: 840px) {
+    @media (max-width: 782px) {
       min-width: 70px;
+      margin: 2px 10px;
+    }
+    @media (max-width: 600px) {
+      margin: 2px;
     }
 
     &:hover,
@@ -220,6 +233,10 @@ const SignOut = styled.div`
 
   a {
     font-size: 12.5px;
+  }
+
+  @media (max-width: 782px) {
+    bottom: 50px;
   }
 `;
 

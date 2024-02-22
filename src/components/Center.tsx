@@ -24,10 +24,14 @@ const Center: React.FC = () => {
     setShowModal(modalState);
   };
   useEffect(() => {
+    dispatch(fetchArticles()); // Fetch the latest articles once the post operation has succeeded
+  }, []);
+  useEffect(() => {
     if (status === "succeeded") {
       dispatch(fetchArticles()); // Fetch the latest articles once the post operation has succeeded
     }
-  }, [status, dispatch]);
+  }, [status]);
+
   return (
     <Container>
       <PostBox>
@@ -68,8 +72,10 @@ const Center: React.FC = () => {
         )}
         {articles &&
           articles.map((article) => {
-            const { content, id, mediaUrl, timestamp, user } = article;
+            const { content, id, mediaUrl, timestamp, user, mimeType } =
+              article;
             const dateAndTime = new Date(timestamp);
+
             const options: Intl.DateTimeFormatOptions = {
               day: "2-digit",
               month: "short",
@@ -102,7 +108,16 @@ const Center: React.FC = () => {
                 <Description>{content}</Description>
                 {mediaUrl && (
                   <SharedImage>
-                    <img src={mediaUrl} alt="User posted image or video." />
+                    {mimeType && mimeType.startsWith("image/") ? (
+                      <img src={mediaUrl} alt="User posted image" />
+                    ) : mimeType && mimeType.startsWith("video/") ? (
+                      <video width="320" height="240" controls>
+                        <source src={mediaUrl} type={mimeType} />
+                        Your browser does not support the video tag.
+                      </video>
+                    ) : (
+                      <p>Unsupported media type</p>
+                    )}
                   </SharedImage>
                 )}
                 <Reactions>
@@ -413,7 +428,8 @@ const SharedImage = styled.div`
   position: relative;
   padding: 1rem 0 0 0;
 
-  img {
+  img,
+  video {
     height: 100%;
     width: 100%;
     object-fit: contain;

@@ -112,7 +112,7 @@ const PostModal: React.FC<modalProps> = ({ switchModal }) => {
             {shareMedia && (
               <>
                 {shareMedia.type.startsWith("video/") ? (
-                  <video width="320" height="240" controls>
+                  <video controls>
                     <source
                       src={URL.createObjectURL(shareMedia)}
                       type={shareMedia.type}
@@ -187,7 +187,10 @@ const PostModal: React.FC<modalProps> = ({ switchModal }) => {
 
             <Post
               onClick={(event) => executePost(event)}
-              disabled={textContent ? false : true}
+              disabled={
+                currentUser?.email === "demo@email.com" ||
+                (!textContent && !shareMedia)
+              }
               $isContent={!!textContent || !!shareMedia}
             >
               Post

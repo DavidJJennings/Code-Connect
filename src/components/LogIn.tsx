@@ -1,13 +1,55 @@
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { logInUser } from "../state/user/userSlice";
 import { AppDispatch, RootState } from "../state/store";
 import { Navigate } from "react-router-dom";
+import { useState } from "react";
 
 const LogIn: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [invalidLogin, setInvalidLogin] = useState("");
+
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    setEmail(event.target.value);
+  };
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    setPassword(event.target.value);
+  };
+
+  const emailSignIn = async (
+    event: React.FormEvent<HTMLFormElement>,
+    email: string,
+    password: string
+  ) => {
+    event.preventDefault();
+    await signInWithEmailAndPassword(auth, email, password)
+      .then((result) => {
+        const user = result.user;
+        if (user.uid && user.email) {
+          dispatch(
+            logInUser({
+              uid: user.uid,
+              email: user.email,
+              photoURL: "/demo-profile-icon.svg",
+              displayName: "Demo User",
+            })
+          );
+        }
+      })
+      .catch(() =>
+        setInvalidLogin(
+          "Invalid Login, please use the demo account provided or login with your google account."
+        )
+      );
+  };
 
   const signInWithGoogle = async (
     event: React.MouseEvent<HTMLButtonElement>
@@ -52,17 +94,26 @@ const LogIn: React.FC = () => {
             <Hero>
               <h1>Connect, Create, Conquer!</h1>
 
-              <Form>
+              <Form onSubmit={(event) => emailSignIn(event, email, password)}>
                 <label htmlFor="username">Email or Phone</label>
-                <input id="username" type="text" autoComplete="current-email" />
+                <input
+                  id="username"
+                  type="text"
+                  autoComplete="current-email"
+                  placeholder="demo@email.com"
+                  onChange={(event) => handleEmailChange(event)}
+                />
                 <label htmlFor="password">Password</label>
                 <input
+                  onChange={(event) => handlePasswordChange(event)}
                   type="password"
                   id="password"
+                  placeholder="demo123"
                   autoComplete="current-password"
                 />
                 <a href="#">Forgot Password?</a>
-                <LogInBtn>Sign In</LogInBtn>
+                {invalidLogin && <span>{invalidLogin}</span>}
+                <LogInBtn type="submit">Sign In</LogInBtn>
                 <GoogleBtn onClick={(event) => signInWithGoogle(event)}>
                   <img src="/google-g-icon.svg" alt="" />
                   Sign In with Google
@@ -200,7 +251,7 @@ const Hero = styled.div`
   img {
     width: 500px;
     position: absolute;
-    top: 60px;
+    top: 28px;
 
     right: -120px;
 
@@ -223,6 +274,10 @@ const Form = styled.form`
   justify-content: space-evenly;
   height: 400px;
   width: 50%;
+
+  span {
+    color: red;
+  }
 
   @media screen and (max-width: 768px) {
     width: 100%;

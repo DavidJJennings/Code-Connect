@@ -7,6 +7,7 @@ interface Article {
   id: string;
   content: string;
   mediaUrl?: string;
+  mimeType?: string;
   timestamp: string;
   user: UserState["user"];
 }
@@ -25,6 +26,7 @@ export const fetchArticles = createAsyncThunk(
         id: doc.id,
         content: data.content,
         mediaUrl: data.mediaUrl,
+        mimeType: data.mimeType,
         timestamp: data.timestamp,
         user: data.user,
       };

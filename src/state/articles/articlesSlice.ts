@@ -8,6 +8,7 @@ type Post = {
   id: string;
   content: string;
   mediaUrl?: string;
+  mimeType?: string;
   timestamp: string;
   user: UserState["user"];
 };
@@ -38,17 +39,19 @@ export const postArticle = createAsyncThunk(
   async (payload: PostPayload, { rejectWithValue }) => {
     try {
       let fileUrl = "";
-
+      let mimeType = "";
       if (payload.file) {
         const fileRef = ref(storage, `/uploads/${payload.file.name}`);
         await uploadBytes(fileRef, payload.file);
         fileUrl = await getDownloadURL(fileRef);
+        mimeType = payload.file.type;
       }
 
       const newPost: Post = {
         id: "",
         content: payload.content,
         mediaUrl: fileUrl,
+        mimeType: mimeType,
         timestamp: payload.timestamp,
         user: payload.user,
       };
