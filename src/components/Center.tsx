@@ -24,11 +24,11 @@ const Center: React.FC = () => {
     setShowModal(modalState);
   };
   useEffect(() => {
-    dispatch(fetchArticles()); // Fetch the latest articles once the post operation has succeeded
+    dispatch(fetchArticles(currentUser)); // Fetch the latest articles once the post operation has succeeded
   }, []);
   useEffect(() => {
     if (status === "succeeded") {
-      dispatch(fetchArticles()); // Fetch the latest articles once the post operation has succeeded
+      dispatch(fetchArticles(currentUser)); // Fetch the latest articles once the post operation has succeeded
     }
   }, [status]);
 

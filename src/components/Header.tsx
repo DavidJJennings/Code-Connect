@@ -142,7 +142,10 @@ const Search = styled.div`
         width: 150px;
       }
       @media (max-width: 782px) {
-        width: 250px;
+        width: 300px;
+      }
+      @media (max-width: 450px) {
+        width: 150px;
       }
     }
   }
