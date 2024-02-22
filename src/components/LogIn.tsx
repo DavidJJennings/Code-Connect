@@ -36,7 +36,7 @@ const LogIn: React.FC = () => {
         if (user.uid && user.email) {
           dispatch(
             logInUser({
-              uid: user.uid,
+              uid: "demoAccountUid",
               email: user.email,
               photoURL: "/demo-profile-icon.svg",
               displayName: "Demo User",

@@ -203,6 +203,9 @@ const NavList = styled.li`
       display: flex;
       align-items: center;
       color: rgba(52, 73, 94, 1);
+      @media (max-width: 450px) {
+        display: none;
+      }
     }
     @media (max-width: 782px) {
       min-width: 70px;
@@ -210,6 +213,11 @@ const NavList = styled.li`
     }
     @media (max-width: 600px) {
       margin: 2px;
+    }
+    @media (max-width: 450px) {
+      margin: 8px;
+
+      min-width: 0;
     }
 
     &:hover,
@@ -230,13 +238,14 @@ const SignOut = styled.div`
   border-radius: 0 0 5px 5px;
   width: 90%;
   transition-duration: 200ms;
-
+  box-shadow: rgba(14, 30, 37, 0.8) 0px 2px 4px 0px;
   a {
     font-size: 12.5px;
   }
 
   @media (max-width: 782px) {
-    bottom: 50px;
+    top: -50px;
+    left: 0;
   }
 `;
 
@@ -250,7 +259,9 @@ const User = styled(NavList)`
   }
   &:hover {
     ${SignOut} {
-      display: block;
+      display: flex;
+      justify-content: center;
+      text-align: center;
     }
   }
 `;

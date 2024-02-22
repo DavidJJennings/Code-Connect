@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "../../firebase";
 import { UserState } from "../user/userSlice";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, query, orderBy, where } from "firebase/firestore";
+import useCurrentUser from "../user/useCurrentUser";
 
 interface Article {
   id: string;
@@ -15,8 +16,14 @@ interface Article {
 export const fetchArticles = createAsyncThunk(
   "articles/fetchArticles",
   async () => {
+    const user = useCurrentUser();
+    const userUid = user?.uid;
     const postsCollectionRef = collection(db, "posts");
-    const q = query(postsCollectionRef, orderBy("timestamp", "desc"));
+    const q = query(
+      postsCollectionRef,
+      where("user.uid", "==", userUid),
+      orderBy("timestamp", "desc")
+    );
     const querySnapshot = await getDocs(q);
 
     const articles: Article[] = [];
