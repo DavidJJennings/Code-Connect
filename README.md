@@ -1,30 +1,11 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite - Code Connect
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Code Connect is a social media clone designed with Junior Developers in mind, giving them a place where they could connect and collaborate on larger scale projects, giving them the opportunity to practise both the soft and hard skills that are essential for working well with a team in a professional environment.
 
-Currently, two official plugins are available:
+The project can be viewed at the following URL: {Not Currently Live}.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+To gain access to the full posting functionality of the app it is reccomended that you sign in with your google account, however, if you just wish to visit the dashboard you can log in using the following demo account details.
 
-## Expanding the ESLint configuration
+Email : demo@email.com
+Password : demo123
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
